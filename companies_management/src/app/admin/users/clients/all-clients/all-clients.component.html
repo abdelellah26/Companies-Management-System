@@ -1,0 +1,68 @@
+<app-header></app-header>
+<app-navbar></app-navbar>
+<main role="main" class="main-content">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div class="row ">
+          <div class="col-auto me-auto">
+            <h4>Clients List</h4>
+            <h6>Manage your Clients</h6>
+          </div>
+          <div class="col-auto">
+            <div class="page-btn">
+              <a routerLink="/Create-Client" class="btn "><i class="bi bi-plus-lg"></i>Add New</a>
+          </div>
+          </div>
+        </div>
+        <div class="row table">
+          <!-- Recent orders -->
+          <div class="col-md-12">
+            <div class="card shadow">
+              <div class="table-responsive">
+                <table datatable [dtOptions]="dtOptions" class="table datanew " style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Phone Number</th>
+                      <th>Email</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>abdelellah</td>
+                      <td>issile</td>
+                      <td>21205820</td>
+                      <td>dc</td>
+                      <td>
+                        <div class="d-flex justify-content-center">
+                          <a class="nav-link text-muted pr-0" id="navbarDropdownMenuLigroupnk" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown()">
+                            <i class="bi bi-three-dots-vertical"></i>
+                          </a>
+                          <div class="dropdown-menu dropdown-menu-right" [ngClass]="{ 'show': isDropdownOpen }">
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" href="#">Remove</a>
+                            <a class="dropdown-item" href="#">Show</a>
+                          </div>
+
+                        </div>
+                      </td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div> <!-- / .col-md-3 -->
+
+        </div> <!-- end section -->
+
+      </div>
+    </div> <!-- .row -->
+  </div> <!-- .container-fluid -->
+
+</main> <!-- main -->
+

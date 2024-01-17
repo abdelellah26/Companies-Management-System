@@ -1,0 +1,15 @@
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+main
+{
+  background-color: #f8f9fa;
+}
+.table{
+
+  background-color: #fff;
+  padding: 10px;
+
+}
+.btn{
+background-color: #3475f8;
+color: #fff;
+}

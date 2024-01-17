@@ -1,0 +1,38 @@
+<app-header></app-header>
+<app-navbar></app-navbar>
+<main role="main" class="main-content">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 col-xl-10">
+        <div class="row align-items-center my-4">
+          <div class="col">
+            <h2 class="h3 mb-0 page-title">Add Category</h2>
+          </div>
+        </div>
+        <form (ngSubmit)="onSubmit()" [formGroup]="form">
+          <hr class="my-4">
+          <div class="form-row col-12">
+            <div class="row">
+              <div class="form-group mb-3">
+                <label for="inputNamCategory">Category Name</label>
+                <input type="text" formControlName="name" name="name" id="inputNamCategory"  class="form-control form-control-lg" placeholder="Category Name"  required>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputImageCategory">Category Image</label>
+                <input type="file" formControlName="pic" name="pic" id="inputImageCategory" class="form-control">
+
+              </div>
+            </div>
+
+          </div>
+          <div class="form-row">
+
+            <div class="col-md-12 text-left">
+              <button type="submit" class="btn btn-lg btn-primary btn-block" >Add Category</button>
+            </div>
+          </div>
+        </form>
+      </div> <!-- .col-12 -->
+    </div> <!-- .row -->
+  </div> <!-- .container-fluid -->
+</main> <!-- main -->

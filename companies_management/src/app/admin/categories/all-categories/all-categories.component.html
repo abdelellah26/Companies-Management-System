@@ -1,0 +1,57 @@
+
+<app-header></app-header>
+<app-navbar></app-navbar>
+<main role="main" class="main-content">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div class="row ">
+          <div class="col-auto me-auto">
+            <h4>Categories List</h4>
+            <h6>Manage your Categories</h6>
+          </div>
+          <div class="col-auto">
+            <div class="page-btn">
+              <a routerLink="/Create-category" class="btn "><i class="bi bi-plus-lg"></i>Add New Category</a>
+          </div>
+          </div>
+        </div>
+        <div class="row table">
+          <!-- Recent orders -->
+          <div class="col-md-12">
+            <table datatable [dtOptions]="dtOptions" class="table  datanew" style="width:100%">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Pic</th>
+                  <th>Name</th>
+                  <th>Action</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of categoryArray; let i=index">
+                  <td>{{i+1}}</td>
+                  <td>{{item.pic}}</td>
+                  <td>{{item.name}}</td>
+                  <td>
+                    <a class="nav-link text-muted pr-0" id="navbarDropdownMenuLigroupnk" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown()">
+                      <i class="bi bi-three-dots-vertical"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" [ngClass]="{ 'show': isDropdownOpen }">
+                      <a class="dropdown-item" href="#">Edit</a>
+                      <a class="dropdown-item" href="#">Remove</a>
+                      <a class="dropdown-item" href="#">Show</a>
+                    </div>
+                  </td>
+                </tr>
+                <!-- Add more rows as needed -->
+              </tbody>
+            </table>
+          </div> <!-- / .col-md-3 -->
+
+        </div> <!-- end section -->
+
+      </div>
+    </div> <!-- .row -->
+  </div> <!-- .container-fluid -->
+</main> <!-- main -->

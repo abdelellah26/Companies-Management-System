@@ -1,0 +1,74 @@
+<aside class="sidebar-left border-right bg-white shadow" id="leftSidebar" data-simplebar>
+  <a href="#" class="btn collapseSidebar toggle-btn d-lg-none text-muted ml-2 mt-3" data-toggle="toggle">
+    <i class="bi bi-x-lg"><span class="sr-only"></span></i>
+  </a>
+  <nav class="vertnav navbar navbar-light">
+    <!-- nav bar -->
+    <div class="w-100 mb-4 d-flex">
+      <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="#">
+        <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+
+        </svg>
+      </a>
+    </div>
+    <ul class="navbar-nav flex-fill w-100 mb-2">
+      <p class="text-muted nav-heading mt-4 mb-1">
+        <span>Main</span>
+      </p>
+      <li class="nav-item " *ngFor="let item of dashboard" >
+        <a [routerLink]="item.route" data-toggle="collapse" aria-expanded="false" class="nav-link">
+          <i class="{{item.icon}}"></i>
+          <span class="ml-3 item-text">{{item.name}}</span>
+        </a>
+      </li>
+      <p class="text-muted nav-heading mt-4 mb-1">
+        <span>Products</span>
+      </p>
+      <li class="nav-item" *ngFor="let item of products">
+        <a [routerLink]="item.route" data-toggle="collapse" aria-expanded="false" class="nav-link" >
+          <i class="{{item.icon}}"></i>
+          <span class="ml-3 item-text">{{item.name}}</span>
+        </a>
+      </li>
+
+      <p class="text-muted nav-heading mt-4 mb-1">
+        <span>Sales</span>
+      </p>
+      <li class="nav-item" *ngFor="let item of sales">
+        <a [routerLink]="item.route" data-toggle="collapse" aria-expanded="false" class="nav-link">
+          <i class="{{item.icon}}"></i>
+          <span class="ml-3 item-text">{{item.name}}</span>
+        </a>
+      </li>
+
+      <p class="text-muted nav-heading mt-4 mb-1">
+        <span>Peoples</span>
+      </p>
+      <li class="nav-item" *ngFor="let item of peoples">
+        <a [routerLink]="item.route" data-toggle="collapse" aria-expanded="false" class="nav-link">
+          <i class="{{item.icon}}"></i>
+          <span class="ml-3 item-text">{{item.name}}</span>
+        </a>
+      </li>
+
+      <p class="text-muted nav-heading mt-4 mb-1">
+        <span>Settings</span>
+      </p>
+      <li class="nav-item" *ngFor="let item of settings" (click)="toggleChildren(item)">
+        <a [routerLink]="item.route" data-toggle="collapse" aria-expanded="false" class="nav-link">
+          <i class="{{ item.icon }}"></i>
+          <span class="ml-3 item-text">{{ item.name }}</span>
+        </a>
+        <ul class="navbar-nav" *ngIf="item.children && item.showChildren">
+          <li class="nav-item" *ngFor="let child of item.children">
+            <a [routerLink]="child.route" data-toggle="collapse" aria-expanded="false" class="nav-link">
+              <span class="ml-3 item-text">{{ child.name }}</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+
+  </nav>
+</aside>

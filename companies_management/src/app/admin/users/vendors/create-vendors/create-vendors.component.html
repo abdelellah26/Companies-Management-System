@@ -1,0 +1,71 @@
+<app-header></app-header>
+<app-navbar></app-navbar>
+<main role="main" class="main-content">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 col-xl-10">
+        <div class="row align-items-center my-4">
+          <div class="col">
+            <h2 class="h3 mb-0 page-title">Add Vendor</h2>
+          </div>
+        </div>
+        <form #VendorForm=ngForm >
+          <hr class="my-4">
+          <h5 class="mb-2 mt-4">Personal</h5>
+          <div class="form-row col-12">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="firstname1">Firstname</label>
+                <input type="text" id="firstname1" class="form-control" name="firstname" required="" [(ngModel)]="form.firstname">
+
+              </div>
+              <div class="form-group col-md-6">
+                <label for="lastname1">Lastname</label>
+                <input type="text" id="lastname1" class="form-control" name="lastname" required="" [(ngModel)]="form.lastname">
+              </div>
+            </div>
+          </div>
+          <div class="form-row col-12">
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label for="inputEmail2">Email</label>
+                <input type="email2" id="inputEmail2" class="form-control"  name="email" required="" [(ngModel)]="form.email">
+
+
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputPhone1">Phone</label>
+                <input type="text" id="inputPhone1" class="form-control"  name="phone" required="" [(ngModel)]="form.phone">
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputGender1">Gender</label>
+                <select class="form-select" id="inputGender1" aria-label="Default select example" name="gender" required="" [(ngModel)]="form.gender">
+                  <option value="female">Female</option>
+                  <option value="male">Male</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-row col-12">
+            <div class="row">
+              <div class="form-group mb-3">
+                <label for="inputPassword2" class="sr-only">Password</label>
+                <input type="password" id="inputPassword2"  class="form-control form-control-lg" placeholder="Password" required  name="password" [(ngModel)]="form.password" required>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputConfirmPassword1">Confirm Password</label>
+                <input type="password" id="inputConfirmPassword1" class="form-control"  name="password_confirmation" required [(ngModel)]="form.password_confirmation">
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+
+            <div class="col-md-12 text-left">
+              <button type="submit" class="btn btn-lg btn-primary btn-block " [disabled]="!VendorForm.valid">Add Vendor</button>
+            </div>
+          </div>
+        </form>
+      </div> <!-- .col-12 -->
+    </div> <!-- .row -->
+  </div> <!-- .container-fluid -->
+</main> <!-- main -->
