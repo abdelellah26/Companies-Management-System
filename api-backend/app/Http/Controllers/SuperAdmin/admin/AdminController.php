@@ -5,6 +5,7 @@ namespace App\Http\Controllers\SuperAdmin\admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
+use App\Http\Requests\UserRequest;
 use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -30,17 +31,9 @@ class AdminController extends Controller
 
     return response()->json(['status' => true, 'data' => $deliveryMans]);
     }
-    public function store(AdminRequest $request)
+    public function store(UserRequest $request)
     {
-        try {
-            DB::beginTransaction();
 
-            // Check if the email already exists
-            if (User::where('email', $request->input('email'))->exists()) {
-                return response()->json(['status' => false, 'message' => 'Email already exists.'], 422);
-            }
-
-            // Continue with the creation if the email is unique
             $formFields = $request->validated();
 
             $user = User::create([
@@ -50,24 +43,18 @@ class AdminController extends Controller
                 'gender' => $formFields['gender'],
                 'email' => $formFields['email'],
                 'password' => Hash::make($formFields['password']),
+                'type'=>'admin'
             ]);
 
-            $user->sendEmailVerificationNotification();
 
             Admin::create([
                 'id_user' => $user->id
             ]);
 
-            DB::commit();
 
-            event(new Registered($user));
+            return response()->json(['message' => 'Admin created successfully.']);
 
-            return response()->json(['status' => true, 'message' => 'User and delivery man created successfully. Verification email sent.']);
-        } catch (\Exception $e) {
-            DB::rollBack();
 
-            return response()->json(['status' => false, 'message' => 'Failed to create user and delivery man', 'error' => $e->getMessage()], 500);
-        }
     }
 
     public function show($id){
@@ -93,6 +80,6 @@ class AdminController extends Controller
         return response()->json(['status' => true, 'message' => 'Delivery Man Updated Successfully']);
     }
 
-    
+
 
 }

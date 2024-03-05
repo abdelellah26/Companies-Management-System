@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { CreateCategory } from './create-category.model';
-import { DataCategoryService } from '../../services/data-category.service';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CategoryService } from '../../services/category/category.service';
+import { Category } from '../../services/category/Category';
 
 @Component({
   selector: 'app-create-categories',
@@ -10,49 +10,52 @@ import { DataCategoryService } from '../../services/data-category.service';
   styleUrls: ['./create-categories.component.css']
 })
 export class CreateCategoriesComponent {
-  files:any;
-  submitted=false;
-  data:any;
-  form: FormGroup;
-  post=new CreateCategory()
-  constructor(private toastr: ToastrService,private formBuilder: FormBuilder,
-    private dataService: DataCategoryService){
-      this.form = this.formBuilder.group({
-        name: ['', Validators.required],
-        pic: [null, Validators.required]
-      });
-  }
-
-  createForm(){
-    this.form= this.formBuilder.group({
-      name: ['', Validators.required],
-      pic: [null, Validators.required]
+  categoryForm: FormGroup;
+  selectedFile: File|undefined;
+  constructor(
+    public formBuilder:FormBuilder,
+    private router:Router,
+    private ngZone:NgZone,
+    private categoryService: CategoryService
+  ){
+    this.categoryForm = this.formBuilder.group({
+      name: [''],
     });
+
+    this.selectedFile= undefined;
   }
 
-  get f(){
-    return this.form.controls;
-  }
-  uploadImage(event:any){
-    this.files=event.target.files[0];
-    console.log(this.files);
-  }
-
-  onSubmit() {
-    this.submitted = true;
-
-    if (this.form.invalid || !this.files) {
-      return;
+  onFileChange(event: any): void {
+    if (event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
     }
-
-    const formData = new FormData();
-    formData.append("pic", this.files, this.files.name);
-
-    this.dataService.uploadData(formData).subscribe(res => {
-      this.data = res;
-      console.log(this.data);
-    });
   }
+
+
+  onSubmit(): void {
+    if (this.selectedFile !== undefined) {
+        const category: Category = {
+          name: this.categoryForm.value.name,
+          pic: this.selectedFile
+        };
+
+        this.categoryService.addCategory(category)
+        .subscribe(
+          () => {
+            console.log('Data added successfully');
+            this.ngZone.run(() => this.router.navigateByUrl('/Categories'));
+          },
+          (error) => {
+            console.error('Error:', error);
+          }
+        );
+
+    }else{
+      console.error('No file selected.');
+    }
+  }
+
+
 
 
 }

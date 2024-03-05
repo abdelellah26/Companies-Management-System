@@ -6,12 +6,12 @@
       <div class="col-12">
         <div class="row ">
           <div class="col-auto me-auto">
-            <h4>Vondors List</h4>
-            <h6>Manage your vondors</h6>
+            <h4>Vendors List</h4>
+            <h6>Manage your Vendors</h6>
           </div>
           <div class="col-auto">
             <div class="page-btn">
-              <a routerLink="/Create-vendor" class="btn "><i class="bi bi-plus-lg"></i>Add New </a>
+              <a routerLink="/Create-vendor" class="btn "><i class="bi bi-plus-lg"></i>Add New</a>
           </div>
           </div>
         </div>
@@ -19,43 +19,40 @@
           <!-- Recent orders -->
           <div class="col-md-12">
             <div class="">
-              <table datatable [dtOptions]="dtOptions" class="table datanew" style="width:100%">
-                <thead>
-                  <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Phone Number</th>
-                    <th>Email</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                      <div class="d-flex justify-content-center">
-                        <a class="nav-link text-muted pr-0 d-md-none" id="navbarDropdownMenuLigroupnk" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown()">
+              <div class="">
+                <table id="dataTable" datatable [dtOptions]="dtOptions" class="table datanew " style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Phone Number</th>
+                      <th>Email</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let vendor of vendors;let i=index" >
+
+                      <td>{{vendor.first_name}}</td>
+                      <td>{{vendor.last_name}}</td>
+                      <td>{{vendor.phone}}</td>
+                      <td>{{vendor.email}}</td>
+                      <td>
+                        <a class="nav-link text-muted pr-0" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown(vendor.id)">
                           <i class="bi bi-three-dots-vertical"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right" [ngClass]="{ 'show': isDropdownOpen }">
-                          <a class="dropdown-item" href="#">Edit</a>
-                          <a class="dropdown-item" href="#">Remove</a>
-                          <a class="dropdown-item" href="#">Show</a>
+                        <div class="dropdown-menu dropdown-menu-right" [ngClass]="{ 'show': isDropdownOpenMap[vendor.id] }">
+                          <a class="dropdown-item" routerLink="/Update-Vendor/{{vendor.id}}">Edit</a>
+                          <a class="dropdown-item" (click)="delete(vendor.id,i)">Remove</a>
                         </div>
-                        <!-- For larger screens, the dropdown will be visible in its original position -->
-                        <a class="nav-link text-muted pr-0 d-none d-md-inline" id="navbarDropdownMenuLigroupnk" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown()">
-                          <i class="bi bi-three-dots-vertical"></i>
-                        </a>
-                      </div>
-                    </td>
-                  </tr>
-                  <!-- Add more rows as needed -->
-                </tbody>
-              </table>
+                      </td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                  </tbody>
+                </table>
+              </div>
             </div>
+
           </div> <!-- / .col-md-3 -->
 
         </div> <!-- end section -->
@@ -63,5 +60,6 @@
       </div>
     </div> <!-- .row -->
   </div> <!-- .container-fluid -->
+
 </main> <!-- main -->
 

@@ -1,0 +1,68 @@
+<app-header></app-header>
+<app-navbar></app-navbar>
+<main role="main" class="main-content">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 col-xl-10">
+        <div class="row align-items-center my-4">
+          <div class="col">
+            <h2 class="h3 mb-0 page-title">Update Vendor</h2>
+          </div>
+        </div>
+        <form [formGroup]="updateForm" (ngSubmit)="onUpdate()">
+          <hr class="my-4">
+          <h5 class="mb-2 mt-4">Personal</h5>
+          <div class="form-row col-12">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label>First name</label>
+                <input type="text"  class="form-control" formControlName="first_name" required>
+              </div>
+              <div class="form-group col-md-6">
+                <label >Last name</label>
+                <input type="text" class="form-control" formControlName="last_name" required>
+              </div>
+            </div>
+          </div>
+          <div class="form-row col-12">
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label >Email</label>
+                <input type="email" class="form-control" formControlName="email">
+              </div>
+              <div class="form-group col-md-4">
+                <label>Phone</label>
+                <input type="text" class="form-control" formControlName="phone" required>
+              </div>
+              <div class="form-group col-md-4">
+                <label >Gender</label>
+                <select class="form-select" aria-label="Default select example" formControlName="gender" required>
+                  <option value="female">Female</option>
+                  <option value="male">Male</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-row col-12">
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label >Neighborhoods</label>
+                <select class="form-select" aria-label="Default select example"  required formControlName="id_neighborhood" >
+                  <option  *ngFor="let Neighborhood of neighborhoods;let i=index" value="{{Neighborhood.id}}">{{Neighborhood.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+
+            <div class="col-md-12 text-left">
+              <button type="submit" class="btn btn-primary">Update Vendor</button>
+            </div>
+          </div>
+        </form>
+      </div> <!-- .col-12 -->
+    </div> <!-- .row -->
+  </div> <!-- .container-fluid -->
+</main> <!-- main -->
+
+

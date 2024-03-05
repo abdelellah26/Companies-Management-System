@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Validation\ValidationException;
 class UserController extends Controller
 {
     public function register(Request $request){
@@ -26,6 +25,7 @@ class UserController extends Controller
             'gender'=> $request->gender,
             'email'=> $request->email ,
             'password'=> Hash::make($request->password),
+            'type'=> 'admin'
 
         ]);
         $user->save();
@@ -37,17 +37,35 @@ class UserController extends Controller
 
     }
 
-    public function login(Request $request){
-        $user=User::whereEmail($request->email)->first();
-        if(isset($user->id)){
-            if(Hash::check($request->password,$user->password)){
-                $token=$user->createToken('auth_token')->plainTextToken;
-                return response()->json(['message'=>'Connected Successfuly','token'=>$token]);
-            }else{
-                return response()->json(['message'=>'Invalid Credentials']);
-            }
-        }else{
-            return response()->json(['message'=>'Invalid Credentials']);
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
         }
+
+        $tokenName = 'auth_token';
+        $roles = [];
+
+        if ($user->type == 'admin') {
+            $roles[] = 'role:admin';
+        } elseif ($user->type == 'vendor') {
+            $roles[] = 'role:vendor';
+        }
+
+        return response()->json([
+            'token' => $user->createToken($tokenName, $roles)->plainTextToken,
+            'isAdmin' => $user->type === 'admin',
+        ]);
+
+
     }
 }

@@ -18,9 +18,9 @@
         <div class="row table">
           <!-- Recent orders -->
           <div class="col-md-12">
-            <div class="card shadow">
-              <div class="table-responsive">
-                <table datatable [dtOptions]="dtOptions" class="table datanew " style="width:100%">
+            <div class="">
+              <div class="">
+                <table id="dataTable" datatable [dtOptions]="dtOptions" class="table datanew " style="width:100%">
                   <thead>
                     <tr>
                       <th>First Name</th>
@@ -31,22 +31,19 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>abdelellah</td>
-                      <td>issile</td>
-                      <td>21205820</td>
-                      <td>dc</td>
-                      <td>
-                        <div class="d-flex justify-content-center">
-                          <a class="nav-link text-muted pr-0" id="navbarDropdownMenuLigroupnk" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown()">
-                            <i class="bi bi-three-dots-vertical"></i>
-                          </a>
-                          <div class="dropdown-menu dropdown-menu-right" [ngClass]="{ 'show': isDropdownOpen }">
-                            <a class="dropdown-item" href="#">Edit</a>
-                            <a class="dropdown-item" href="#">Remove</a>
-                            <a class="dropdown-item" href="#">Show</a>
-                          </div>
+                    <tr *ngFor="let client of clients;let i=index" >
 
+                      <td>{{client.first_name}}</td>
+                      <td>{{client.last_name}}</td>
+                      <td>{{client.phone}}</td>
+                      <td>{{client.email}}</td>
+                      <td>
+                        <a class="nav-link text-muted pr-0" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown(client.id)">
+                          <i class="bi bi-three-dots-vertical"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" [ngClass]="{ 'show': isDropdownOpenMap[client.id] }">
+                          <a class="dropdown-item" routerLink="/Update-Client/{{client.id}}">Edit</a>
+                          <a class="dropdown-item" (click)="delete(client.id,i)">Remove</a>
                         </div>
                       </td>
                     </tr>

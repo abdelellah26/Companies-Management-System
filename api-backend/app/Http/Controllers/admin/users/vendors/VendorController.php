@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\admin\users\vendors;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeliveryManRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\VendorRequest;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Auth\Events\Registered;
@@ -17,6 +19,7 @@ class VendorController extends Controller
         // Utilisation de la jointure pour récupérer les données des utilisateurs avec les noms des quartiers
         $deliveryMans = DB::table('vendors')
             ->join('users', 'vendors.id_user', '=', 'users.id')
+            ->whereNull('users.deleted_at')
             ->select(
                 'users.id',
                 'users.first_name',
@@ -29,17 +32,9 @@ class VendorController extends Controller
 
     return response()->json(['status' => true, 'data' => $deliveryMans]);
     }
-    public function store(UserRequest $request)
+    public function store(VendorRequest $request)
     {
-        try {
-            DB::beginTransaction();
 
-            // Check if the email already exists
-            if (User::where('email', $request->input('email'))->exists()) {
-                return response()->json(['status' => false, 'message' => 'Email already exists.'], 422);
-            }
-
-            // Continue with the creation if the email is unique
             $formFields = $request->validated();
 
             $user = User::create([
@@ -48,10 +43,8 @@ class VendorController extends Controller
                 'phone' => $formFields['phone'],
                 'gender' => $formFields['gender'],
                 'email' => $formFields['email'],
-                'password' => Hash::make($formFields['password']),
+                'type'=>'vendor'
             ]);
-
-            $user->sendEmailVerificationNotification();
 
             $neighborhoodId = $formFields['id_neighborhood'];
 
@@ -60,22 +53,16 @@ class VendorController extends Controller
                 'id_neighborhood' => $neighborhoodId,
             ]);
 
-            DB::commit();
+            return response()->json(['message' => 'Vendor created successfully.']);
 
-            event(new Registered($user));
 
-            return response()->json(['status' => true, 'message' => 'User and Vendor created successfully. Verification email sent.']);
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return response()->json(['status' => false, 'message' => 'Failed to create user and Vendor', 'error' => $e->getMessage()], 500);
-        }
     }
 
     public function show($id){
-        $deliveryMans = DB::table('vendors')
+        $vendor= DB::table('vendors')
         ->join('users', 'vendors.id_user', '=', 'users.id')
-        ->join('neighborhoods', 'vendors.id_neighborhood', '=', 'neighborhoods.id')
+        ->join('neighborhoods','neighborhoods.id','=','vendors.id_neighborhood')
+        ->where('users.id', '=', $id)
         ->select(
             'users.id',
             'users.first_name',
@@ -83,18 +70,39 @@ class VendorController extends Controller
             'users.phone',
             'users.gender',
             'users.email',
-            'neighborhoods.name as neighborhood_name'
+            'neighborhoods.name'
         )
         ->get();
-        return response()->json(['status' => true, 'data' => $deliveryMans]);
+
+    return response()->json($vendor);
     }
 
 
-    public function update(UpdateUserRequest $request, $id){
+    public function update(DeliveryManRequest $request, $id){
         $formFields = $request->validated();
         $user=User::findOrFail($id);
-        $user->update($formFields);
+        $vendor=$user->vendor;
+        $user->first_name=$formFields['first_name'];
+        $user->last_name=$formFields['last_name'];
+        $user->phone=$formFields['phone'];
+        $user->gender=$formFields['gender'];
+        $user->email=$formFields['email'];
+
+        $vendor->id_neighborhood=$formFields['id_neighborhood'];
+
+        $user->save();
+        $vendor->save();
         return response()->json(['status' => true, 'message' => 'Vendor Updated Successfully']);
+
+    }
+
+    public function destroy($id){
+        $user=User::findOrFail($id);
+        if ($user->delete()) {
+            return response()->json(['status' => true, 'message' => 'Vendor Deleted Successfully']);
+        } else {
+            return response()->json(['status' => false, 'message' => 'Something Went Wrong'], 500);
+        }
 
     }
 }

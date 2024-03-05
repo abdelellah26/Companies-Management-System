@@ -1,5 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { DeliveryManService } from 'src/app/admin/services/deliveryMans/delivery-man.service';
+import { NeighborhoodDeliveryManService } from 'src/app/admin/services/neighborhood/deliveryMan/neighborhood-delivery-man.service';
+import { Neighborhood } from 'src/app/admin/services/neighborhood/Neighborhood';
 
 @Component({
   selector: 'app-create-delivery-mans',
@@ -8,40 +13,55 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CreateDeliveryMansComponent {
 
-  first_name: string="";
-  last_name: string="";
-  email: string="";
-  phone: number=0;
-  password: string="";
-  gender: string="";
+  deliveryManForm: FormGroup;
+  neighborhoods:any=[];
+  constructor(
+    public formBuilder:FormBuilder,
+    private router:Router,
+    private ngZone:NgZone,
+    private deliveryManService: DeliveryManService,
+    private neighborhood: NeighborhoodDeliveryManService
+  ){
+    this.deliveryManForm= this.formBuilder.group({
+      first_name: [''],
+      last_name: [''],
+      phone: [''],
+      email: [''],
+      gender: [''],
+      id_neighborhood: [''],
 
-  constructor(private http: HttpClient ) { }
-
-  register(){
-    let bodyData={
-      first_name: this.first_name,
-      last_name: this.last_name,
-      email: this.email,
-      phone: this.phone,
-      password: this.password,
-      gender: this.gender,
-    }
-    this.http.post("http://localhost:8000/api/deliveryMan", bodyData, { responseType: 'text' }).subscribe(
-      (resultData: any) => {
-        console.log(resultData);
-        alert("Delivery Man Registered Successfully");
-      },
-      (error) => {
-        console.error('Error registering delivery man:', error);
-        alert("Failed to register delivery man");
-      }
-    );
+    })
   }
 
-  save()
-  {
+  ngOnInit(): void {
+    this.ngZone.run(() => {
+      this.neighborhood.getNeiborhoods().subscribe(
+        res => {
+          // Vérifiez si la propriété 'data' existe dans la réponse et est un tableau
+          if (res && 'data' in res && Array.isArray(res.data)) {
+            this.neighborhoods = res.data as Neighborhood[];
+          } else {
+            console.error('The "data" property in the API response is invalid.');
+          }
+        },
+        error => {
+          console.error('Erreur API :', error);
+        }
+      );
+    });
+  }
 
-        this.register();
+  onSubmit(): void {
+    this.deliveryManService.addDeliveryMan(this.deliveryManForm.value)
+      .subscribe(
+        () => {
+          console.log('Data added successfully');
+          this.ngZone.run(() => this.router.navigateByUrl('/Delivery-Mans'));
+        },
+        (error) => {
+          console.error('Error:', error);
+        }
+      );
 
 
   }

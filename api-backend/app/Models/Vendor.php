@@ -14,11 +14,15 @@ class Vendor extends Model
         'id_user',
         'id_neighborhood',
     ];
-    
+
     public function user(){
         return $this->belongsTo(User::class, 'id_user');
     }
     public function neighborhood(){
         return $this->belongsTo(Neighborhood::class, 'id_neighborhood');
+    }
+
+    public function isVendor(){
+        return true;
     }
 }

@@ -5,13 +5,12 @@ namespace App\Http\Controllers\admin\neighborhoods;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NeighborhoodRequest;
 use App\Models\Neighborhood;
-use Illuminate\Http\Request;
 
 class NeighborhoodController extends Controller
 {
     public function index(){
         $neighb=Neighborhood::all();
-        return response()->json($neighb);
+        return response()->json(['status' => true, 'data' => $neighb]);
     }
 
     public function store(NeighborhoodRequest $request){

@@ -11,7 +11,7 @@ class OrderRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,7 @@ class OrderRequest extends FormRequest
     {
         return [
             'id_client'=>'required',
-            'total_paid'
+            'status'=> 'nullable',
         ];
     }
 }

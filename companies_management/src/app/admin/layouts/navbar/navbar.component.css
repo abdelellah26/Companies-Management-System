@@ -26,6 +26,12 @@ a {
     text-decoration: underline;
     background-color: #f0f0f1;
    }
+
+   .activeButton{
+    color: #3475f8;
+    text-decoration: underline;
+    background-color: #f0f0f1;
+   }
     .nav {
       display: flex;
       flex-wrap: wrap;

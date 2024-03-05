@@ -29,18 +29,17 @@
               </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of categoryArray; let i=index">
+                <tr *ngFor="let category of categories; let i=index">
                   <td>{{i+1}}</td>
-                  <td>{{item.pic}}</td>
-                  <td>{{item.name}}</td>
+                  <td><img [src]="category.pic" alt="{{category.name}}"></td>
+                  <td>{{category.name}}</td>
                   <td>
-                    <a class="nav-link text-muted pr-0" id="navbarDropdownMenuLigroupnk" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown()">
+                    <a class="nav-link text-muted pr-0" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown(category.id)">
                       <i class="bi bi-three-dots-vertical"></i>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" [ngClass]="{ 'show': isDropdownOpen }">
-                      <a class="dropdown-item" href="#">Edit</a>
-                      <a class="dropdown-item" href="#">Remove</a>
-                      <a class="dropdown-item" href="#">Show</a>
+                    <div class="dropdown-menu dropdown-menu-right" [ngClass]="{ 'show': isDropdownOpenMap[category.id] }">
+                      <a class="dropdown-item" >Edit</a>
+                      <a class="dropdown-item" (click)="delete(category.id,i)">Remove</a>
                     </div>
                   </td>
                 </tr>
@@ -48,6 +47,8 @@
               </tbody>
             </table>
           </div> <!-- / .col-md-3 -->
+
+          <!-- data-table.component.html -->
 
         </div> <!-- end section -->
 

@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use HasFactory,SoftDeletes;
+    protected $table="products";
+    protected $primarykey='id';
     protected $fillable = [
         'id_category',
         'name',
@@ -16,7 +18,7 @@ class Product extends Model
         'sku',
         'minimum_quantity',
         'quantity',
-        'purchase_price',
+        'moyen_purchase_price',
         'selling_price',
     ];
     public function category(){

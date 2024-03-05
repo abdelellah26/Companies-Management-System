@@ -38,33 +38,29 @@ export class NavbarComponent implements OnInit {
       icon: 'bi bi-tag',
       route: '/Categories',
 
+    },
+    {
+      number: '4',
+      name: 'Add Neiborhood',
+      icon: 'bi bi-plus-square',
+      route: '/create-Neiborhood',
+
     }
 
   ]
+
   sales=[
     {
       number: '1',
       name: 'Sales',
-      icon: 'bi bi-cart',
-      route: '/Dashboard',
-    },
-    {
-      number: '2',
-      name: 'Invoices',
-      icon: 'bi bi-file-text',
-      route: '/Dashboard',
-    },
-    {
-      number: '3',
-      name: 'Pos',
-      icon: 'bi bi-tablet-landscape',
-      route: '/Dashboard',
+      icon: 'bi bi-cart2',
+      route: '/sales',
     }
   ]
   peoples=[
     {
       number: '1',
-      name: 'Cliens',
+      name: 'Clients',
       icon: 'bi bi-people',
       route: '/Clients',
     },
@@ -81,20 +77,7 @@ export class NavbarComponent implements OnInit {
       route: '/Delivery-Mans',
     }
   ]
-  settings=[
-    {
-      number: '1',
-      name: 'Settings',
-      icon: 'bi bi-gear',
-      showChildren: false,
-      children:[
-        {
-          number: '1',
-          name: 'Product Details',
-          route: '/Dashboard',
-        },
-      ]
-    },
+  logout=[
     {
       number: '2',
       name: 'Logout',

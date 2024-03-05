@@ -16,7 +16,7 @@
         <span>Main</span>
       </p>
       <li class="nav-item " *ngFor="let item of dashboard" >
-        <a [routerLink]="item.route" data-toggle="collapse" aria-expanded="false" class="nav-link">
+        <a [routerLink]="item.route" data-toggle="collapse" aria-expanded="false" class="nav-link" routerLinkActive="activeButton">
           <i class="{{item.icon}}"></i>
           <span class="ml-3 item-text">{{item.name}}</span>
         </a>
@@ -25,47 +25,38 @@
         <span>Products</span>
       </p>
       <li class="nav-item" *ngFor="let item of products">
-        <a [routerLink]="item.route" data-toggle="collapse" aria-expanded="false" class="nav-link" >
+        <a [routerLink]="item.route" data-toggle="collapse" aria-expanded="false" class="nav-link" routerLinkActive="activeButton">
           <i class="{{item.icon}}"></i>
           <span class="ml-3 item-text">{{item.name}}</span>
         </a>
       </li>
-
       <p class="text-muted nav-heading mt-4 mb-1">
         <span>Sales</span>
       </p>
       <li class="nav-item" *ngFor="let item of sales">
-        <a [routerLink]="item.route" data-toggle="collapse" aria-expanded="false" class="nav-link">
+        <a [routerLink]="item.route" data-toggle="collapse" aria-expanded="false" class="nav-link" routerLinkActive="activeButton">
           <i class="{{item.icon}}"></i>
           <span class="ml-3 item-text">{{item.name}}</span>
         </a>
       </li>
-
       <p class="text-muted nav-heading mt-4 mb-1">
         <span>Peoples</span>
       </p>
       <li class="nav-item" *ngFor="let item of peoples">
-        <a [routerLink]="item.route" data-toggle="collapse" aria-expanded="false" class="nav-link">
+        <a [routerLink]="item.route" data-toggle="collapse" aria-expanded="false" class="nav-link" routerLinkActive="activeButton">
           <i class="{{item.icon}}"></i>
           <span class="ml-3 item-text">{{item.name}}</span>
         </a>
       </li>
 
       <p class="text-muted nav-heading mt-4 mb-1">
-        <span>Settings</span>
+        <span>logout</span>
       </p>
-      <li class="nav-item" *ngFor="let item of settings" (click)="toggleChildren(item)">
-        <a [routerLink]="item.route" data-toggle="collapse" aria-expanded="false" class="nav-link">
+      <li class="nav-item" *ngFor="let item of logout" >
+        <a [routerLink]="item.route" data-toggle="collapse" aria-expanded="false" class="nav-link" routerLinkActive="activeButton">
           <i class="{{ item.icon }}"></i>
           <span class="ml-3 item-text">{{ item.name }}</span>
         </a>
-        <ul class="navbar-nav" *ngIf="item.children && item.showChildren">
-          <li class="nav-item" *ngFor="let child of item.children">
-            <a [routerLink]="child.route" data-toggle="collapse" aria-expanded="false" class="nav-link">
-              <span class="ml-3 item-text">{{ child.name }}</span>
-            </a>
-          </li>
-        </ul>
       </li>
     </ul>
 

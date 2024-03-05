@@ -30,26 +30,19 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let deliveryMan of deliveryMans">
+                  <tr *ngFor="let deliveryMan of deliveryMans;let i=index">
                     <td>{{ deliveryMan.first_name }}</td>
                     <td>{{ deliveryMan.last_name }}</td>
                     <td>{{ deliveryMan.phone }}</td>
                     <td>{{ deliveryMan.email }}</td>
 
                     <td>
-                      <div class="d-flex justify-content-center">
-                        <a class="nav-link text-muted pr-0 d-md-none" role="button" (click)="toggleDropdown(deliveryMan)">
-                          <i class="bi bi-three-dots-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" [ngClass]="{ 'show': deliveryMan.isDropdownOpen }">
-                          <a class="dropdown-item" href="#">Edit</a>
-                          <a class="dropdown-item" href="#">Remove</a>
-                          <a class="dropdown-item" href="#">Show</a>
-                        </div>
-                        <!-- For larger screens, the dropdown will be visible in its original position -->
-                        <a class="nav-link text-muted pr-0 d-none d-md-inline" role="button" (click)="toggleDropdown(deliveryMan)">
-                          <i class="bi bi-three-dots-vertical"></i>
-                        </a>
+                      <a class="nav-link text-muted pr-0" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown(deliveryMan.id)">
+                        <i class="bi bi-three-dots-vertical"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-right" [ngClass]="{ 'show': isDropdownOpenMap[deliveryMan.id] }">
+                        <a class="dropdown-item" routerLink="/Update-DeliveryMan/{{deliveryMan.id}}">Edit</a>
+                        <a class="dropdown-item" (click)="delete(deliveryMan.id,i)">Remove</a>
                       </div>
                     </td>
                   </tr>

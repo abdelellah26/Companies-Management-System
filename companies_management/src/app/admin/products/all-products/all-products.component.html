@@ -12,7 +12,7 @@
           <div class="col-auto">
             <div class="page-btn">
               <a routerLink="/Create-Product" class="btn "><i class="bi bi-plus-lg"></i>Add New Product</a>
-          </div>
+            </div>
           </div>
         </div>
         <div class="row table">
@@ -26,33 +26,27 @@
                     <th>SKU</th>
                     <th>Category</th>
                     <th>Price</th>
-                    <th>purchase price</th>
+                    <th>Moyen Purchase price</th>
                     <th>Qty</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td> Dhs</td>
-                    <td> Dhs</td>
-                    <td></td>
+                  <tr *ngFor="let product of products; let i=index">
+                    <td class="p-2"><img [src]="product.pic" alt="{{product.name}}"> {{product.name}}</td>
+                    <td>{{product.sku}}</td>
+                    <td>{{product.category}}</td>
+                    <td>{{product.selling_price}} Dhs</td>
+                    <td>{{product.moyen_purchase_price}} Dhs</td>
+                    <td>{{product.quantity}}</td>
                     <td>
-                      <div class="d-flex justify-content-center">
-                        <a class="nav-link text-muted pr-0 d-md-none" id="navbarDropdownMenuLigroupnk" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown()">
-                          <i class="bi bi-three-dots-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" [ngClass]="{ 'show': isDropdownOpen }">
-                          <a class="dropdown-item" href="#">Edit</a>
-                          <a class="dropdown-item" href="#">Remove</a>
-                          <a class="dropdown-item" href="#">Show</a>
-                        </div>
-                        <!-- For larger screens, the dropdown will be visible in its original position -->
-                        <a class="nav-link text-muted pr-0 d-none d-md-inline" id="navbarDropdownMenuLigroupnk" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown()">
-                          <i class="bi bi-three-dots-vertical"></i>
-                        </a>
+                      <a class="nav-link text-muted pr-0" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown(product.id)">
+                        <i class="bi bi-three-dots-vertical"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-right" [ngClass]="{ 'show': isDropdownOpenMap[product.id] }">
+                        <a class="dropdown-item" routerLink="/Update-Product/{{product.id}}">Edit</a>
+                        <a class="dropdown-item" (click)="delete(product.id,i)">Remove</a>
+                        <a class="dropdown-item" routerLink="/Deteil-Product/{{product.id}}" >Show</a>
                       </div>
                     </td>
                   </tr>

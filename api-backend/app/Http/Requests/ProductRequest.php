@@ -21,11 +21,12 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('id');
         return [
             'id_category'=>'required',
-            'name'=>'required|unique:products',
+            'name'=>'required',
             'pic'=>'required',
-            'sku'=>'required|unique:products',
+            'sku' => 'unique:products,sku,' . $id,
             'minimum_quantity'=>'required',
             'quantity'=>'required',
             'moyen_purchase_price'=>'required',

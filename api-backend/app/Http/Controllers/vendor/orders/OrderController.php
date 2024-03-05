@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\vendor\orders;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\vendor\DetailOrderRequest;
 use App\Http\Requests\vendor\OrderRequest;
+use App\Models\DetailOrder;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 
@@ -25,10 +27,20 @@ class OrderController extends Controller
         return response()->json(['status' => true, 'data' => $order]);
     }
 
-    public function store(OrderRequest $request){
+    public function store(OrderRequest $request,DetailOrderRequest $requestDetail){
         $formFields=$request->validated();
+        $formFieldDetail=$requestDetail->validated();
+        $formFields['status'] = $formFields['status'] ?? 'Pending';
         $order=Order::create($formFields);
-        return response()->json( $order);
+
+            DetailOrder::create([
+                'id_product' =>  $formFieldDetail['id_product'],
+                'id_order' =>$order->id,
+                'quantity' =>  $formFieldDetail['quantity'],
+            ]);
+
+
+        return response()->json(['status' => true, 'message' => 'Order and details created successfully']);
     }
 
     public function show($id){
@@ -36,16 +48,4 @@ class OrderController extends Controller
         return response()->json( $order);
     }
 
-    public function update(OrderRequest $request,$id){
-        $formFields = $request->validated();
-        $order=Order::find($id);
-        $order->update($formFields);
-        return response()->json(['status' => true, 'message' => 'Order Updated Successfully']);
-    }
-
-    public function destroy($id){
-        $order=Order::findOrFail($id);
-        $order->delete($id);
-        return response()->json(null, 204);
-    }
 }

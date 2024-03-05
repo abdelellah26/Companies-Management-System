@@ -1,0 +1,71 @@
+<app-header></app-header>
+<app-navbar></app-navbar>
+<main role="main" class="main-content">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 col-xl-10">
+        <div class="row align-items-center my-4">
+          <div class="col">
+            <h2 class="h3 mb-0 page-title">Update Product</h2>
+          </div>
+
+        </div>
+        <form [formGroup]="ProductForm" (ngSubmit)="onUpdate()">
+          <hr class="my-4">
+          <div class="form-row col-12">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label>Product Name</label>
+                <input type="text" class="form-control" formControlName="name" required>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Sku</label>
+                <input type="text" class="form-control" formControlName="sku" required>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label>Quantity</label>
+                <input type="number" class="form-control" formControlName="quantity" required>
+              </div>
+              <div class="form-group col-md-4">
+                <label>Purchase Price</label>
+                <input type="number" class="form-control" formControlName="moyen_purchase_price" required>
+              </div>
+              <div class="form-group col-md-4">
+                <label >Category</label>
+                <select class="form-select" aria-label="Default select example" formControlName="id_category" required >
+                  <option *ngFor="let Category of categories;let i=index" value="{{Category.id}}">{{Category.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label >Product Image</label>
+                <input type="file" name="pic" (change)="onFileChange($event)"  class="form-control" required>
+              </div>
+              <div class="form-group col-md-4">
+                <label>Minimum Quantity</label>
+                <input type="number" class="form-control" formControlName="minimum_quantity" required>
+              </div>
+              <div class="form-group col-md-4">
+                <label>Selling Price</label>
+                <input type="number" class="form-control" formControlName="selling_price" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-12 text-left">
+              <button type="submit" class="btn btn-lg btn-primary btn-block ">Update</button>
+            </div>
+          </div>
+        </form>
+      </div> <!-- .col-12 -->
+    </div> <!-- .row -->
+  </div> <!-- .container-fluid -->
+</main> <!-- main -->

@@ -5,34 +5,44 @@ namespace App\Http\Controllers\admin\categories;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
     public function index(){
         $categories = Category::all();
+        $categories->transform(function ($category) {
+            $category->pic = asset('storage/' . str_replace('public/', '', $category->pic));
+            return $category;
+        });
         return response()->json($categories);
     }
-
     public function store(CategoryRequest $request) {
-        $formFields=$request->validated();
 
-        if ($request->hasFile('pic')) {
-            $completeFileName=$request->file('pic')->getClientOriginalName();
-            $fileNameOnly=pathinfo($completeFileName, PATHINFO_FILENAME);
-            $extenshion= $request->file('pic')->getClientOriginalExtension();
-            $comPic=str_replace(' ', '_', $fileNameOnly).'-'.rand() . '_'.time(). '.'.$extenshion;
-            $formFields['pic']=$request->file('pic')->storeAs('public/images/categories',$comPic);
-            $category = Category::create($formFields);
+
+        try {
+            $formFields = [];
+
+            if ($request->hasFile('pic')) {
+                $completeFileName = $request->file('pic');
+                $fileNameOnly = pathinfo($completeFileName, PATHINFO_FILENAME);
+                $extension = $request->file('pic')->getClientOriginalExtension();
+                $comPic = str_replace(' ', '_', $fileNameOnly) . '-' . rand() . '_' . time() . '.' . $extension;
+                $formFields['pic'] = $request->file('pic')->storeAs('images/categories', $comPic, 'public');
+            }
+
+            $formFields['name'] = $request->input('name');
+          
+            Category::create($formFields);
+
+            return response()->json(['status' => true, 'message' => 'Category Saved Successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'message' => 'Something Went Wrong', 'error' => $e->getMessage()], 422);
         }
-
-        if($category->save()){
-            return['status'=>true,'message'=>'Category Saved Successfully'];
-        }else{
-            return['status'=>false,'message'=>'Somethind Went Wrong'];
-        }
-
     }
+
+
 
     public function show($id){
         $categories=Category::find($id);

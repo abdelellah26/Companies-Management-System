@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Client extends Model
 {
     use HasFactory;
-    protected $table="orders";
+    protected $table="clients";
     protected $primarykey='id';
     protected $fillable = [
         'id_user',
+        'id_neighborhood'
     ];
 
     public function user(){

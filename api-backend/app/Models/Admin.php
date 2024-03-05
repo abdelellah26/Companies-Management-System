@@ -18,4 +18,5 @@ class Admin extends Model
     {
         return $this->belongsTo(User::class, 'id_user');
     }
+
 }

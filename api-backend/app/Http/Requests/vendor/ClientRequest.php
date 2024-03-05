@@ -27,6 +27,8 @@ class ClientRequest extends FormRequest
             'last_name'=>'required',
             'phone'=>'required',
             'gender'=>'required',
+            'email'=>'email',
+            'id_neighborhood'=>'required'
         ];
     }
 }

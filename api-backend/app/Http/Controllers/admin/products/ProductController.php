@@ -6,20 +6,35 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+
     public function index(){
-        $categorie = Product::with('category')->get();
-        $product= Product::all();
-        return response()->json(['products'=>$product,'categorie'=>$categorie]);
+        $products = DB::table('products')
+            ->join('categories', 'products.id_category', '=', 'categories.id')
+            ->whereNull('products.deleted_at')
+            ->select(
+                'products.id',
+                'products.name',
+                'products.pic',
+                'products.quantity',
+                'products.sku',
+                'products.moyen_purchase_price',
+                'products.selling_price',
+                'categories.name as category'
+            )
+            ->get();
+            $products->transform(function ($product) {
+                $product->pic = asset('storage/' . str_replace('public/', '', $product->pic));
+                return $product;
+            });
+
+    return response()->json(['status' => true, 'data' => $products]);
     }
 
-    public function create(){
-        $categorie=Category::all();
-        return response()->json($categorie);
-    }
 
     public function store(ProductRequest $request){
         $formFields=$request->validated();
@@ -40,21 +55,37 @@ class ProductController extends Controller
 
     public function show($id){
         $categorie = Category::all();
-        $product= Product::all();
-        return response()->json(['products'=>$product,'categorie'=>$categorie]);
+        $products = DB::table('products')
+        ->join('categories', 'products.id_category', '=', 'categories.id')
+        ->whereNull('products.deleted_at')
+        ->select(
+            'products.id',
+            'products.name',
+            'products.pic',
+            'products.sku',
+            'products.selling_price',
+            'products.minimum_quantity',
+            'products.moyen_purchase_price',
+            'categories.name as category'
+        )
+        ->get();
+        return response()->json(['products'=>$products,'categorie'=>$categorie]);
     }
 
     public function update(ProductRequest $request,$id){
         $formFields=$request->validated();
         $product=Product::find($id);
-                $moyen_pur=$product->moyen_purchase_price;
-                $moyen=($moyen_pur+$formFields['moyen_purchase_price'])/2;
 
-                $last_quantity=$product->quantity;
-                $quantity=($last_quantity+$formFields['quantity']);
+        // Calcul de la nouvelle moyenne
+        $moyen_pur = $product->moyen_purchase_price;
+        $moyen = ($moyen_pur + $formFields['moyen_purchase_price']) / 2;
+
+        // Calcul de la nouvelle quantité
+        $last_quantity = $product->quantity;
+        $quantity = $last_quantity + $formFields['quantity'];
 
                 // Si une nouvelle image est fournie, effectuez la mise à jour de l'image
-                if ($request->hasFile('pic')) {
+                if ($request->hasFile('pic')) { 
                     // Logique de traitement de l'image similaire à celle dans la méthode store()
                     $completeFileName = $request->file('pic')->getClientOriginalName();
                     $fileNameOnly = pathinfo($completeFileName, PATHINFO_FILENAME);
@@ -69,13 +100,14 @@ class ProductController extends Controller
 
                     // Mettez à jour le champ de l'image
                     $product->pic = $formFields['pic'];
-                    $product->moyen_purchase_price= $formFields[$moyen];
-                    $product->quantity=$formFields[ $quantity];
+
                 }
 
 
         // Mettez à jour les autres champs du modèle
-        $product->update($formFields);
+        $product->moyen_purchase_price=$moyen;
+        $product->quantity=$quantity;
+        $product->save();
 
         return response()->json(['status' => true, 'message' => 'Product Updated Successfully']);
     }
@@ -95,4 +127,6 @@ class ProductController extends Controller
                 }
 
     }
+
+
 }

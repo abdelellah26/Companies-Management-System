@@ -1,0 +1,133 @@
+<app-header></app-header>
+<app-navbar></app-navbar>
+<main role="main" class="main-content">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12 ">
+        <div class="row">
+          <div class="form-group col-md-6 btn">
+            <a class="nav-link text-muted pr-0" role="button" routerLink="/Products">
+              <i class="bi bi-arrow-left"></i>
+            </a>
+          </div>
+        </div>
+        <div style="text-align:center">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <div class="card shadow mb-4">
+                    <div class="card-header">
+                      <strong class="card-title">Detail</strong>
+                    </div>
+                    <div class="card-body">
+                      <dl class="row align-items-center mb-0">
+                        <dt class="col-sm-2 mb-3 text-muted">Name</dt>
+                        <dd class="col-sm-4 mb-3">
+                          <strong>Brown Asher</strong>
+                        </dd>
+
+                        <dt class="col-sm-2 mb-3 text-muted">Category</dt>
+                        <dd class="col-sm-4 mb-3">
+                          <strong>Kelley Sonya</strong>
+                        </dd>
+                      </dl>
+                      <dl class="row mb-0">
+                        <dt class="col-sm-2 mb-3 text-muted">Sku</dt>
+                        <dd class="col-sm-4 mb-3">TS520512</dd>
+
+                        <dt class="col-sm-2 mb-3 text-muted">Quantity</dt>
+                        <dd class="col-sm-4 mb-3">10000</dd>
+
+                        <dt class="col-sm-2 mb-3 text-muted">Selling price</dt>
+                        <dd class="col-sm-4 mb-3"> 18 Dhs </dd>
+                        <dt class="col-sm-2 mb-3 text-muted">Purchase price</dt>
+                        <dd class="col-sm-4 mb-3"> 14 Dhs </dd>
+
+                        <dt class="col-sm-2 mb-3 text-muted">Created On</dt>
+                        <dd class="col-sm-4 mb-3">2020-04-21 00:38:38</dd>
+                        <dt class="col-sm-2 mb-3 text-muted">Last Update</dt>
+                        <dd class="col-sm-4 mb-3">2020-04-21 08:48:18</dd>
+
+                      </dl>
+
+                    </div> <!-- .card-body -->
+                  </div> <!-- .card -->
+                </div>
+
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <div class="card shadow mb-4">
+                    <div class="card-header">
+                      <div class="form-group d-flex col-md-12">
+                        <div class="form-group col-md-6">
+                          <strong class="card-title"></strong>
+                        </div>
+                        <div class="form-group col-md-6 d-flex justify-content-end">
+                          <a class="nav-link text-muted pr-0" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  (click)="toggleDropdown()">
+                            <i class="bi bi-chevron-compact-down"></i>
+                          </a>
+                          <div class="dropdown-menu" [ngClass]="{'show': isDropdownVisible}">
+                            <a class="dropdown-item">2024</a>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <apx-chart
+                      [series]="chartOptions.series!"
+                      [chart]="chartOptions.chart!"
+                      [xaxis]="chartOptions.xaxis!"
+                      [title]="chartOptions.title!"
+                      ></apx-chart>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="form-group col-md-12">
+            <div class="card shadow mb-4">
+              <div class="card-header">
+                <div class="form-group d-flex col-md-12">
+                  <div class="form-group col-md-6">
+                    <strong class="card-title">Top clients</strong>
+                  </div>
+                  <div class="form-group col-md-6 d-flex justify-content-end">
+                    <a class="nav-link text-muted pr-0" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="toggleDropdown2()">
+                      <i class="bi bi-chevron-compact-down"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" [ngClass]="{'show': isDropdownVisible2}">
+                      <a class="dropdown-item">2024</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <apx-chart
+                [series]="chartOptions2.series!"
+                [chart]="chartOptions2.chart!"
+                [xaxis]="chartOptions2.xaxis!"
+                [title]="chartOptions2.title!"
+                ></apx-chart>
+              </div> <!-- .card-body -->
+            </div> <!-- .card -->
+          </div>
+        </div>
+       </div> <!-- .col-12 -->
+
+
+    </div> <!-- .row -->
+  </div> <!-- .container-fluid -->
+</main> <!-- main -->

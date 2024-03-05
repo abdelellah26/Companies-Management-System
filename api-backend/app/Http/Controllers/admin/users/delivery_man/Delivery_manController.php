@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin\users\delivery_man;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeliveryManRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\Delivery_man;
@@ -18,6 +19,7 @@ class Delivery_manController extends Controller
         // Utilisation de la jointure pour récupérer les données des utilisateurs avec les noms des quartiers
         $deliveryMans = DB::table('delivery_mans')
             ->join('users', 'delivery_mans.id_user', '=', 'users.id')
+            ->whereNull('users.deleted_at')
             ->select(
                 'users.id',
                 'users.first_name',
@@ -30,53 +32,30 @@ class Delivery_manController extends Controller
 
     return response()->json(['status' => true, 'data' => $deliveryMans]);
     }
-    public function store(UserRequest $request)
-    {
-        try {
-            DB::beginTransaction();
 
-            // Check if the email already exists
-            if (User::where('email', $request->input('email'))->exists()) {
-                return response()->json(['status' => false, 'message' => 'Email already exists.'], 422);
-            }
+    public function store(DeliveryManRequest $request) {
+        $formFields = $request->validated();
 
-            // Continue with the creation if the email is unique
-            $formFields = $request->validated();
+        $user = User::create([
+            'first_name' => $formFields['first_name'],
+            'last_name' => $formFields['last_name'],
+            'phone' => $formFields['phone'],
+            'gender' => $formFields['gender'],
+            'email'=> $formFields['email'],
+            'type'=>'delivery_man'
+        ]);
+        Delivery_man::create([
+            'id_user' => $user->id,
+            'id_neighborhood'=>$formFields['id_neighborhood']
+        ]);
+        return response()->json(['message' => 'Delivery man created successfully.']);
 
-            $user = User::create([
-                'first_name' => $formFields['first_name'],
-                'last_name' => $formFields['last_name'],
-                'phone' => $formFields['phone'],
-                'gender' => $formFields['gender'],
-                'email' => $formFields['email'],
-                'password' => Hash::make($formFields['password']),
-            ]);
-
-            $user->sendEmailVerificationNotification();
-
-            $neighborhoodId = $formFields['id_neighborhood'];
-
-            Delivery_man::create([
-                'id_user' => $user->id,
-                'id_neighborhood' => $neighborhoodId,
-            ]);
-
-            DB::commit();
-
-            event(new Registered($user));
-
-            return response()->json(['status' => true, 'message' => 'User and delivery man created successfully. Verification email sent.']);
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return response()->json(['status' => false, 'message' => 'Failed to create user and delivery man', 'error' => $e->getMessage()], 500);
-        }
     }
-
     public function show($id){
-        $deliveryMans = DB::table('delivery_mans')
+        $deliveryMans= DB::table('delivery_mans')
         ->join('users', 'delivery_mans.id_user', '=', 'users.id')
-        ->join('neighborhoods', 'delivery_mans.id_neighborhood', '=', 'neighborhoods.id')
+        ->join('neighborhoods','neighborhoods.id','=','delivery_mans.id_neighborhood')
+        ->where('users.id', '=', $id)
         ->select(
             'users.id',
             'users.first_name',
@@ -84,22 +63,45 @@ class Delivery_manController extends Controller
             'users.phone',
             'users.gender',
             'users.email',
-            'neighborhoods.name as neighborhood_name'
+            'neighborhoods.name'
         )
         ->get();
-        return response()->json(['status' => true, 'data' => $deliveryMans]);
+
+    return response()->json($deliveryMans);
     }
 
 
-    public function update(UpdateUserRequest $request, $id){
+
+
+
+    public function update(DeliveryManRequest $request, $id){
         $formFields = $request->validated();
         $user=User::findOrFail($id);
-        $user->update($formFields);
-        return response()->json(['status' => true, 'message' => 'Delivery Man Updated Successfully']);
+        $deliveryMan=$user->deliveryMan;
+        $user->first_name=$formFields['first_name'];
+        $user->last_name=$formFields['last_name'];
+        $user->phone=$formFields['phone'];
+        $user->gender=$formFields['gender'];
+        $user->email=$formFields['email'];
+
+        $deliveryMan->id_neighborhood=$formFields['id_neighborhood'];
+
+        $user->save();
+        $deliveryMan->save();
+        return response()->json(['status' => true, 'message' => 'Delivery man  Updated Successfully']);
 
     }
 
-    
+    public function destroy($id){
+        $user=User::findOrFail($id);
+        if ($user->delete()) {
+            return response()->json(['status' => true, 'message' => 'Delivery Man Deleted Successfully']);
+        } else {
+            return response()->json(['status' => false, 'message' => 'Something Went Wrong'], 500);
+        }
+
+    }
+
 
 
 }

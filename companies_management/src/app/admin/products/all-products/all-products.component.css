@@ -13,3 +13,17 @@ main
 background-color: #3475f8;
 color: #fff;
 }
+
+img{
+  height: 40px;
+  width: 40px;
+}
+td{
+  color: #637381;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  padding: 0px;
+  vertical-align: middle;
+}
+

@@ -1,0 +1,43 @@
+<app-header></app-header>
+<app-navbar></app-navbar>
+<main role="main" class="main-content">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div class="row ">
+          <div class="col-auto me-auto">
+            <h4>Orders List</h4>
+
+          </div>
+        </div>
+        <div class="row table">
+          <!-- Recent orders -->
+          <div class="col-md-12">
+            <div class="">
+              <table class="table table-hover datanew" id="dataTable" datatable [dtOptions]="dtOptions" style="width:100%">
+                <thead>
+                  <tr>
+                    <th>Delivery Man Name</th>
+                    <th>Client Name</th>
+                    <th>Reference</th>
+                    <th>Status</th>
+                    <th>Payment</th>
+                    <th>Total</th>
+                    <th>Paid</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+              </table>
+            </div>
+          </div> <!-- / .col-md-3 -->
+
+        </div> <!-- end section -->
+
+      </div>
+    </div> <!-- .row -->
+  </div> <!-- .container-fluid -->
+</main> <!-- main -->
+

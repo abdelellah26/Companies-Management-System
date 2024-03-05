@@ -23,12 +23,21 @@ import { CreateClientsComponent } from './admin/users/clients/create-clients/cre
 import { AllDeliveryMansComponent } from './admin/users/delivery_man/all-delivery-mans/all-delivery-mans.component';
 import { CreateDeliveryMansComponent } from './admin/users/delivery_man/create-delivery-mans/create-delivery-mans.component';
 import { ProfilComponent } from './admin/profil/profil.component';
-import { PosComponent } from './pos/pos.component';
-import { HeaderPosComponent } from './pos/header-pos/header-pos.component';
-import { HeaderCategoriesComponent } from './pos/header-categories/header-categories.component';
+
 
 import { ToastrModule } from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { CreateNeighborhoodComponent } from './admin/neighborhoods/create-neighborhood/create-neighborhood.component';
+import { UpdateClientComponent } from './admin/users/clients/update-client/update-client.component';
+import { UpdateDeliveryManComponent } from './admin/users/delivery_man/update-delivery-man/update-delivery-man.component';
+import { UpdateVendorComponent } from './admin/users/vendors/update-vendor/update-vendor.component';
+import { UpdateCategoryComponent } from './admin/categories/update-category/update-category.component';
+import { UpdateComponent } from './admin/help/update/update.component';
+import { AllOrdersComponent } from './admin/orders/all-orders/all-orders.component';
+import { UpdateProductComponent } from './admin/products/update-product/update-product.component';
+import { DetailProductComponent } from './admin/products/detail-product/detail-product.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
+
 
 @NgModule({
   declarations: [
@@ -48,9 +57,15 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     AllDeliveryMansComponent,
     CreateDeliveryMansComponent,
     ProfilComponent,
-    PosComponent,
-    HeaderPosComponent,
-    HeaderCategoriesComponent,
+    CreateNeighborhoodComponent,
+    UpdateClientComponent,
+    UpdateDeliveryManComponent,
+    UpdateVendorComponent,
+    UpdateCategoryComponent,
+    UpdateComponent,
+    AllOrdersComponent,
+    UpdateProductComponent,
+    DetailProductComponent,
 
   ],
   imports: [
@@ -62,6 +77,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     HttpClientModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    NgApexchartsModule,
     ToastrModule.forRoot(),
   ],
   providers: [],

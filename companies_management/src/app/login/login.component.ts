@@ -14,21 +14,33 @@ export class LoginComponent {
   }
   public error =null;
   constructor(private authService: AuthService, private router: Router) {}
-     onSubmit(){
-      this.authService.login(this.form)
+  onSubmit() {
+    this.authService.login(this.form)
       .subscribe(
-        data => this.handleResponse(data),
+        (data: any) => {
+          // Lorsque la connexion réussit, le service devrait mettre à jour la propriété isAdmin
+          if (this.authService.isAdmin) {
+            this.router.navigate(['/Dashboard']);
+          } else {
+            // Rediriger vers une page différente pour les non-administrateurs si nécessaire
+            this.router.navigate(['/']);
+          }
+        },
         error => this.handleError(error)
       );
+  }
 
-     }
 
-     private handleResponse(data: any) {
-      localStorage.setItem('token', data.token);
-      this.router.navigate(['/Dashboard']);
-    }
-    private handleError(error: any) {
-      // Traitement des erreurs
+
+     private handleError(error: any) {
       console.error('Une erreur s\'est produite : ', error);
+      if (error.error instanceof ErrorEvent) {
+        // Erreur côté client
+        console.error('Erreur côté client :', error.error.message);
+      } else {
+        // Erreur côté serveur
+        console.error('Code d\'erreur :', error.status);
+        console.error('Réponse du serveur :', error.error);
+      }
     }
 }
